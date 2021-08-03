@@ -1,2 +1,11 @@
 <app-login *ngIf="!auth.isLoggedIn"></app-login>
-<router-outlet></router-outlet>
+<div class="site" *ngIf="auth.isLoggedIn">
+  <app-header></app-header>
+  <div class="main-view">
+    <app-online-list></app-online-list>
+    <div class="main-right">
+      <router-outlet></router-outlet>
+      <app-writing></app-writing>
+    </div>
+  </div>
+</div>

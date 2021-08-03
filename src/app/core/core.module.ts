@@ -3,10 +3,18 @@ import { CommonModule } from '@angular/common';
 import {LoginComponent} from "./login/login.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
+import { HeaderComponent } from './header/header.component';
+import { OnlineListComponent } from './online-list/online-list.component';
+import { WritingComponent } from './writing/writing.component';
+import { ChatHistoryComponent } from './chat-history/chat-history.component';
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    HeaderComponent,
+    OnlineListComponent,
+    WritingComponent,
+    ChatHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -14,7 +22,10 @@ import {SharedModule} from "../shared/shared.module";
     SharedModule
   ],
   exports: [
-    LoginComponent
+    LoginComponent,
+    HeaderComponent,
+    OnlineListComponent,
+    WritingComponent
   ]
 })
 export class CoreModule { }
