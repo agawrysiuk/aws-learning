@@ -1,0 +1,9 @@
+@mixin inside-margin-vertical($inside-margin) {
+  > * {
+    margin-bottom: $inside-margin;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}

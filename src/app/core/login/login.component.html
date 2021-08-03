@@ -1,1 +1,15 @@
-<p>login works!</p>
+<div class="login-screen">
+  <div class="login-window">
+    <form [formGroup]="form">
+      <span class="p-float-label">
+        <input id="email-input" type="text" pInputText [formControlName]="formFields.email">
+        <label for="email-input">Email</label>
+      </span>
+      <span class="p-float-label">
+        <input id="password-input" type="password" pPassword [feedback]="false" [formControlName]="formFields.email">
+        <label for="password-input">Password</label>
+      </span>
+      <button pButton type="button" label="Login" (click)="login()"></button>
+    </form>
+  </div>
+</div>
