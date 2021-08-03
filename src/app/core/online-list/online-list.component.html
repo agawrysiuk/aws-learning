@@ -1,5 +1,5 @@
 <div class="online-list-view">
-  <div *ngFor="let user of onlineList" class="list-user">
+  <div *ngFor="let user of onlineList" class="list-user" (click)="openChat(user.id)">
     <app-user-menu [userName]="user.userName"></app-user-menu>
   </div>
 </div>

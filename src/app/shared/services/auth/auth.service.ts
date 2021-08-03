@@ -15,6 +15,10 @@ export class AuthService {
     return 'Arek';
   }
 
+  get userId(): number {
+    return this.id;
+  }
+
   constructor() {}
 
   login() {

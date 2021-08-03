@@ -1,1 +1,14 @@
-<p>chat-history works!</p>
+<div class="chat-view">
+  <p *ngIf="showInfoText" class="chat-info">Choose someone to write with</p>
+  <p *ngIf="!showInfoText && chatHistory.length === 0" class="chat-info">Start your conversation here</p>
+  <div *ngIf="!showInfoText && chatHistory.length > 0">
+    <div *ngFor="let message of chatHistory">
+      <div [ngStyle]="{'margin-left': message.who === whoEnum.YOU ? 'auto' : '16px'}" class="chat-bubble">
+        <p class="chat-name">{{message.who === whoEnum.YOU ? auth.userName : otherUserName}}
+          <span class="chat-time">{{message.date | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
+        </p>
+        <p class="chat-message">{{message.message}}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,9 +4,13 @@ import {ChatHistoryComponent} from "./core/chat-history/chat-history.component";
 
 const routes: Routes = [
   {
+    path: ":userId",
+    component: ChatHistoryComponent
+  },
+  {
     path: "**",
     component: ChatHistoryComponent
-  }
+  },
 ];
 
 @NgModule({

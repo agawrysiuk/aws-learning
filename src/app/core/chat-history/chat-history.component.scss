@@ -1,3 +1,49 @@
+@import "src/assets/styles/main";
+
 :host {
   flex-grow: 1;
+  background-color: $oxford-blue;
+}
+
+.chat-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  .chat-info {
+    align-self: center;
+    color: $platinum;
+    padding-bottom: 16px;
+  }
+}
+
+.chat-bubble {
+  display: block;
+  margin: 16px 8px;
+  color: $white;
+  padding: 16px 32px;
+  border: 4px solid $black;
+  background-color: $black;
+  border-radius: 8px;
+  width: fit-content;
+
+  .chat-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding-bottom: 4px;
+    color: $platinum;
+  }
+
+  .chat-time {
+    font-size: 0.75rem;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    color: $grey;
+  }
+
+  .chat-message {
+
+  }
 }
