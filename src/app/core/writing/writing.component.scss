@@ -2,19 +2,19 @@
 
 .writing-window {
   width: 100%;
-  border-top: 1px solid $black;
-  background-color: $oxford-blue;
+  border-top: 1px solid $platinum;
+  background-color: $background-color;
   padding: 8px;
 }
 
 .p-inputtext {
   border: none;
   width: 100%;
-  background-color: $oxford-blue;
+  background-color: $background-color;
   box-sizing: border-box;
   box-shadow: none;
   font-size: 1rem;
-  color: $white;
+  color: $black;
 
   &:active,
   &:hover,

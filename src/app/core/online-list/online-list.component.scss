@@ -2,7 +2,7 @@
 
 .online-list-view {
   height: 100%;
-  background-color: $oxford-blue;
+  background-color: $background-color;
   border-right: 1px solid $platinum;
   overflow: hidden;
 
@@ -11,12 +11,12 @@
     min-width: 200px;
     padding: 8px;
     margin: 8px;
-    background-color: $oxford-blue;
+    background-color: $background-color;
     border: 2px solid $platinum;
     border-radius: 8px;
 
     &:hover {
-      background-color: $black;
+      background-color: $platinum;
       border: 2px solid $orange-web;
       cursor: pointer;
     }
