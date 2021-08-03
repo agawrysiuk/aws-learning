@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WritingComponent implements OnInit {
 
+  textToSend: any;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  send() {
+    console.log(this.textToSend);
+    this.textToSend = '';
+  }
 }

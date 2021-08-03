@@ -1,1 +1,4 @@
-<p>writing works!</p>
+<div class="writing-window">
+  <textarea placeholder="Type something..." [rows]="1" pInputTextarea [autoResize]=true
+            [(ngModel)]="textToSend" (keyup.enter)="send()"></textarea>
+</div>

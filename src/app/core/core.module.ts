@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {LoginComponent} from "./login/login.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import { HeaderComponent } from './header/header.component';
 import { OnlineListComponent } from './online-list/online-list.component';
@@ -18,6 +18,7 @@ import { ChatHistoryComponent } from './chat-history/chat-history.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     SharedModule
   ],
