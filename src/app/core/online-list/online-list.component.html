@@ -1,1 +1,5 @@
-<p>online-list works!</p>
+<div class="online-list-view">
+  <div *ngFor="let user of onlineList" class="list-user">
+    <app-user-menu [userName]="user.userName"></app-user-menu>
+  </div>
+</div>
