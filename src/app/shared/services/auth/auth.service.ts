@@ -11,6 +11,10 @@ export class AuthService {
     return this.loggedIn;
   }
 
+  get userName(): string {
+    return 'Arek';
+  }
+
   constructor() {}
 
   login() {

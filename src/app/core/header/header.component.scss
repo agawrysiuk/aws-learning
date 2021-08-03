@@ -1,0 +1,55 @@
+@import "src/assets/styles/main";
+
+.header {
+  width: 100%;
+  padding: 16px 32px;
+  background-color: $oxford-blue;
+  color: $white;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid $platinum;
+
+  .right-side-menu {
+    display: flex;
+    align-items: center;
+
+    .user-icon {
+      position: relative;
+      display: block;
+      width: 32px;
+      height: 32px;
+      background-color: $black;
+      border-radius: 50%;
+
+      i {
+        font-size: 16px;
+        position: absolute;
+        top: calc(50% - 8px);
+        left: calc(50% - 8px);
+        z-index: 1;
+      }
+
+      &:after {
+        position: absolute;
+        content: '';
+        top: 0;
+        right: 0;
+        display: block;
+        width: 8px;
+        height: 8px;
+        background-color: limegreen;
+        border-radius: 50%;
+        z-index: 2;
+      }
+    }
+
+    .user-name {
+      font-size: 1rem;
+      padding-left: 8px;
+    }
+  }
+}
