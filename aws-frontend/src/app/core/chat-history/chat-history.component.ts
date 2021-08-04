@@ -31,7 +31,6 @@ export class ChatHistoryComponent implements OnInit {
         this.chatHistory = this.messageService.getMessages(id).sort((a, b) => {
           return a.date > b.date ? 1 : -1;
         });
-        console.log(this.chatHistory);
       }
     })
   }
