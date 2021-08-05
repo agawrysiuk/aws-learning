@@ -7,6 +7,11 @@
   padding: 8px;
 }
 
+.writing-window.disabled {
+  background-color: $platinum;
+  cursor: not-allowed;
+}
+
 .p-inputtext {
   border: none;
   width: 100%;
@@ -21,5 +26,10 @@
   &:focus {
     border: none;
     box-shadow: none;
+  }
+
+  &:disabled {
+    background-color: $platinum;
+    cursor: not-allowed;
   }
 }

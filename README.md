@@ -109,10 +109,11 @@ Serverless is a tool to automatically deploy a defined architecture to cloud. It
 4. Learned about AWS Toolkit for JetBrains.
 
 05.08.2021
-1. Managed Cognito
+1. Set up Cognito
   - Created cognito-pool to sign-in and sign-up with nickname required attribute and signing up by email
   - Created the following users:
-    - username: Arek@asd.com, password: qwer1234
+    - username: Arek@asd.com, nickname: Arek, password: qwer1234
+    - username: Konrad@asd.com, nickname: Konrad, password: qwer1234
   - Authorized them with:
   ```
   aws cognito-idp admin-set-user-password \
@@ -128,3 +129,12 @@ Serverless is a tool to automatically deploy a defined architecture to cloud. It
     --username Arek@asd.com \
     --user-attributes Name="nickname",Value="Arek"
   ```
+2. Set up AWS services using serverless:
+    - API Gateway Websocket
+    - S3 bucket with Lambda code handlers
+    - Lambda handlers
+    - CloudWatch Logs for Lambda handlers
+    - IAM roles
+    - DynamoDB tables for connections
+3. Managed to connect from app to the websocket in API Gateway
+4. Managed to successfully implement one-time-only chat

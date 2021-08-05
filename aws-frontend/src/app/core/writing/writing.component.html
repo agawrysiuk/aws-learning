@@ -1,4 +1,4 @@
-<div class="writing-window">
+<div class="writing-window" [ngClass]="{'disabled': !recipient}">
   <textarea placeholder="Type something..." [rows]="1" pInputTextarea [autoResize]=true
-            [(ngModel)]="textToSend" (keyup.enter)="send()"></textarea>
+            [(ngModel)]="textToSend" (keyup.enter)="send($event)" [disabled]="!recipient"></textarea>
 </div>

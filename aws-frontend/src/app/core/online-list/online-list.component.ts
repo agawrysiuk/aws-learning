@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../../shared/constants/user";
 import {Router} from "@angular/router";
 import {MessageService} from "../../shared/services/messages/message.service";
+import {AuthService} from "../../shared/services/auth/auth.service";
 
 @Component({
   selector: 'app-online-list',
@@ -13,14 +14,15 @@ export class OnlineListComponent implements OnInit {
   onlineList: User[] = [];
 
   constructor(private router: Router,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private auth: AuthService) {
   }
 
   ngOnInit(): void {
-    this.onlineList = this.messageService.getOnlineList();
+    this.onlineList = this.messageService.getOnlineList(this.auth.visibleName);
   }
 
-  openChat(id: number) {
-    this.router.navigate(['/' + id]);
+  openChat(username: string) {
+    this.router.navigate(['/' + username]);
   }
 }

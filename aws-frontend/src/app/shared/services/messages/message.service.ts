@@ -1,49 +1,36 @@
 import {Injectable} from '@angular/core';
-import {ChatMessage, WhoEnum} from "../../constants/chat-message";
-import * as moment from "moment";
+import {ChatMessage} from "../../constants/chat-message";
 import {User} from "../../constants/user";
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
 
-  onlineUsers: User[] = [
-    {userName: 'Konrad', id: 1},
-    {userName: 'Andrzej', id: 2}
-  ];
+  private chatHistory: ChatMessage[] = [];
 
+  recipientChanged = new Subject<string>();
+  newMessageSubject = new Subject<ChatMessage>();
+  onlineUsers: User[] = [
+    {userName: 'Arek'},
+    {userName: 'Konrad'}
+  ];
   constructor() { }
 
-  getOnlineList() {
-    return this.onlineUsers;
+  getOnlineList(appOwner: string) {
+    return this.onlineUsers.filter(user => user.userName !== appOwner);
   }
 
-  getOtherUserName(id: number) {
-    const otherUser = this.onlineUsers.find(u => u.id == id);
+  getOtherUserName(username: string) {
+    const otherUser = this.onlineUsers.find(u => u.userName == username);
     return otherUser ? otherUser.userName : 'Unknown';
   }
 
-  getMessages(id: number): ChatMessage[] {
-    return this.getMockMessages(id);
-  }
-
-  private getMockMessages(id: number): ChatMessage[] {
-    if(id == 1) {
-      return [
-        {
-          who: WhoEnum.YOU,
-          date: moment().subtract(2, 'minute').toDate(),
-          message: 'Hi, what\'s up?'
-        },
-        {
-          who: WhoEnum.OTHER,
-          date: moment().subtract(1, 'minute').toDate(),
-          message: 'Not much, how about you?'
-        }
-      ];
-    } else {
-      return [];
-    }
+  sort() {
+    // todo: check if needed
+    this.chatHistory = this.chatHistory.sort((a, b) => {
+      return a.date > b.date ? 1 : -1;
+    });
   }
 }
