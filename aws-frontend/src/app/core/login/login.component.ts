@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../shared/services/auth/auth.service";
 
@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder,
-              private auth: AuthService) {
+              private auth: AuthService,
+              private cdr: ChangeDetectorRef) {
     this.form = this.fb.group({
       [this.formFields.email]: this.fb.control(null, Validators.required),
       [this.formFields.password]: this.fb.control(null, Validators.required)
@@ -27,6 +28,10 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.auth.login();
+    this.auth.login(
+      this.form.controls[this.formFields.email].value,
+      this.form.controls[this.formFields.password].value
+    )
+      .then(() => this.cdr.detectChanges());
   }
 }

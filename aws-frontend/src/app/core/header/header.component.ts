@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
   userName: string;
 
   constructor(private auth: AuthService) {
-    this.userName = this.auth.userName;
+    this.userName = this.auth.visibleName;
   }
 
   ngOnInit(): void {

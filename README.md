@@ -107,3 +107,24 @@ Serverless is a tool to automatically deploy a defined architecture to cloud. It
 2. I learned about "serverless" and setting up API Gateway Websocket with Lambda functions that handle connections and messages.
 3. Wrote down information about authorization through AWS Lambda.
 4. Learned about AWS Toolkit for JetBrains.
+
+05.08.2021
+1. Managed Cognito
+  - Created cognito-pool to sign-in and sign-up with nickname required attribute and signing up by email
+  - Created the following users:
+    - username: Arek@asd.com, password: qwer1234
+  - Authorized them with:
+  ```
+  aws cognito-idp admin-set-user-password \
+    --user-pool-id XXX \
+    --username Arek@asd.com \
+    --password qwer1234 \
+    --permanent
+  ```
+  - For changing attributes manually, I used:
+  ```
+  aws cognito-idp admin-update-user-attributes \
+    --user-pool-id  XXX \
+    --username Arek@asd.com \
+    --user-attributes Name="nickname",Value="Arek"
+  ```
