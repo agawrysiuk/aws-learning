@@ -19,6 +19,13 @@ export class ConnectionService {
       );
     this.websocket.onopen = () => {
       console.log("connected");
+      if(this.websocket) {
+        this.websocket.send(
+          JSON.stringify({
+            action: "getConnectedList"
+          })
+        );
+      }
     };
     this.websocket.onerror = (error) => {
       console.log("WebSocket Error " + JSON.stringify(error));
@@ -33,11 +40,17 @@ export class ConnectionService {
       }, 1000);
     };
     this.websocket.onmessage = (event) => {
+      console.log(event);
       const data = JSON.parse(
         event.data
       );
-      console.log("Incoming message: " + JSON.stringify(data));
-      this.messageService.newMessageSubject.next({message: data.message, date: new Date(), who: WhoEnum.OTHER})
+      console.log("Incoming: " + JSON.stringify(data));
+      if(data.message) {
+        this.messageService.newMessageSubject.next({message: data.message, date: new Date(), who: WhoEnum.OTHER})
+      }
+      if(data.online) {
+        this.messageService.setOnlineUsers(data.online);
+      }
     };
   }
 

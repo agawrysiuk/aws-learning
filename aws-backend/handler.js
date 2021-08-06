@@ -59,17 +59,8 @@ module.exports.sendMessage = async (event, context, callback) => {
     console.log(err);
     return { statusCode: 500 };
   }
-  const postCalls = connectionData.Items.map(async ({ connectionId }) => {
-    try {
-      return await send(event, connectionId.S);
-    } catch (err) {
-      if (err.statusCode === 410) {
-        return await deleteConnection(connectionId.S);
-      }
-      console.log(JSON.stringify(err));
-      throw err;
-    }
-  });
+
+  const postCalls = createPostCalls(event, connectionData.Items, JSON.parse(event.body).data);
 
   try {
     await Promise.all(postCalls);
@@ -80,8 +71,34 @@ module.exports.sendMessage = async (event, context, callback) => {
   callback(null, successfullResponse);
 };
 
-const send = (event, connectionId) => {
-  const postData = JSON.parse(event.body).data;
+module.exports.getConnectedList = async (event, context, callback) => {
+  try {
+    const allConnected = await getAllConnected();
+    const dataString = {online: allConnected.Items.map(conn => conn.userid.S)};
+    const postCalls = createPostCalls(event, allConnected.Items, JSON.stringify(dataString));
+    await Promise.all(postCalls);
+  } catch (err) {
+    console.log(err);
+    callback(null, JSON.stringify(err));
+  }
+  callback(null, successfullResponse);
+}
+
+const createPostCalls = (event, list, data) => {
+  return list.map(async ({ connectionId }) => {
+    try {
+      return await send(event, connectionId.S, data);
+    } catch (err) {
+      if (err.statusCode === 410) {
+        return await deleteConnection(connectionId.S);
+      }
+      console.log(JSON.stringify(err));
+      throw err;
+    }
+  });
+}
+
+const send = (event, connectionId, postData) => {
   const apigwManagementApi = new AWS.ApiGatewayManagementApi({
     apiVersion: "2018-11-29",
     endpoint:
@@ -114,6 +131,14 @@ const deleteConnection = (connectionId) => {
 
   return DDB.deleteItem(deleteParams).promise();
 };
+
+const getAllConnected = () => {
+  const connectedParams = {
+    TableName: process.env.CHATCONNECTION_TABLE
+  };
+
+  return DDB.scan(connectedParams).promise();
+}
 
 module.exports.authFunc = async (event, context, callback) => {
   const {

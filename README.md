@@ -138,3 +138,7 @@ Serverless is a tool to automatically deploy a defined architecture to cloud. It
     - DynamoDB tables for connections
 3. Managed to connect from app to the websocket in API Gateway
 4. Managed to successfully implement one-time-only chat
+
+06.08.2021
+1. Learned about DynamoDB and JS API query() / scan() methods
+2. Wrote lambda functions for returning online / active people

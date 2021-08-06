@@ -12,15 +12,9 @@ export class MessageService {
 
   recipientChanged = new Subject<string>();
   newMessageSubject = new Subject<ChatMessage>();
-  onlineUsers: User[] = [
-    {userName: 'Arek'},
-    {userName: 'Konrad'}
-  ];
+  onlineUsersRefreshed = new Subject<User[]>();
+  onlineUsers: User[] = [];
   constructor() { }
-
-  getOnlineList(appOwner: string) {
-    return this.onlineUsers.filter(user => user.userName !== appOwner);
-  }
 
   getOtherUserName(username: string) {
     const otherUser = this.onlineUsers.find(u => u.userName == username);
@@ -32,5 +26,12 @@ export class MessageService {
     this.chatHistory = this.chatHistory.sort((a, b) => {
       return a.date > b.date ? 1 : -1;
     });
+  }
+
+  setOnlineUsers(online: string[]) {
+    this.onlineUsers = online.map(s => {
+      return {userName: s};
+    });
+    this.onlineUsersRefreshed.next(this.onlineUsers);
   }
 }

@@ -59,6 +59,11 @@ functions:
     events:
       - websocket:
           route: sendMessage
+  getConnectedList:
+    handler: handler.getConnectedList
+    events:
+      - websocket:
+          route: getConnectedList
 
 resources:
   Resources:
