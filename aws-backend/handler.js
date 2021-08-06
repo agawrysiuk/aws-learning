@@ -158,6 +158,60 @@ const getAllConnected = () => {
   return DDB.scan(connectedParams).promise();
 }
 
+module.exports.chatHistory = async (event, context, callback) => {
+  console.log(event);
+  console.log(context);
+  let chatHistory;
+
+  const params = {
+    TableName: process.env.CHATHISTORY_TABLE,
+    FilterExpression: "(#from = :xx AND #to = :yy) OR (#from = :yy AND #to = :xx)",
+    ExpressionAttributeNames: {
+      "#from": "from",
+      "#to": "to"
+    },
+    ExpressionAttributeValues: {
+      ":xx": {
+        S: event.queryStringParameters.from
+      },
+      ":yy": {
+        S: event.queryStringParameters.to
+      }
+    }
+  };
+
+  try {
+    chatHistory = await DDB.scan(params).promise();
+    console.log("chat history:");
+    console.log(chatHistory);
+  } catch (error) {
+    console.log(error);
+    return {statusCode: 500};
+  }
+
+  chatHistory = chatHistory.Items.map(item => {
+    return {
+      message: item.message.S,
+      date: item.date.S,
+      from: item.from.S,
+      to: item.to.S
+    };
+  });
+
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify({
+      messages: chatHistory,
+    }),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+
+  callback(null, response);
+};
+
 module.exports.authFunc = async (event, context, callback) => {
   const {
     queryStringParameters: { token },

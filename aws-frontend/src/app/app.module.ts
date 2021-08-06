@@ -10,6 +10,7 @@ import localePl from '@angular/common/locales/pl';
 import {Amplify} from "aws-amplify";
 import {amplifySecretInfo} from "../environments/secret-info";
 import {InitService} from "./shared/services/init/init.service";
+import {HttpClientModule} from "@angular/common/http";
 
 registerLocaleData(localePl);
 
@@ -35,6 +36,7 @@ export function initData(initService: InitService) {
     BrowserModule,
     AppRoutingModule,
     CoreModule,
+    HttpClientModule,
     SharedModule.forRoot()
   ],
   providers: [

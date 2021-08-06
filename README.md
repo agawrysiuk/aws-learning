@@ -102,6 +102,16 @@ Apparently, while defining the table with Serverless/CloudFormation, we don't ha
 exact attributes that will be stored in this table. We type out in the `Properties.AttributeDefinitions` only
 the ones that will be used as keys/indexes.
 
+The second thing I didn't like is the toned down queries. While the official document says you can use AND and OR queries:
+
+https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.NodeJs.04.html
+
+I got awful time while trying to make it into use. The Internet was certain that it's not possible to use
+operators "AND", "OR", or "BETWEEN" in the `KeyConditionExpression` while making API calls. It's worth taking another look at it, because
+so far, I got many errors, alongside with `ValidationException: Query key condition not supported` as well
+as `ValidationException: Query condition missed key schema element: requestId`. For this issue, I needed
+to settled with another method called `scan()` although they say it's not preferable to run with selects.
+
 ### Edu log:
 03.08.2021
 1. Thinking about the application
@@ -157,3 +167,5 @@ the ones that will be used as keys/indexes.
 1. Learned about DynamoDB and JS API query() / scan() methods
 2. Wrote lambda functions for returning online / active people
 3. Created a DynamoDB table for storing the messages and implemented saving
+4. Created httpApi endpoint with a default JWT authorization to get the chat history from DynamoDB table
+5. Imported chat history while entering some conversation

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Auth} from 'aws-amplify';
 import {ConnectionService} from "../connection/connection.service";
 
@@ -8,8 +8,7 @@ import {ConnectionService} from "../connection/connection.service";
 export class AuthService {
 
   private loggedIn: boolean = true;
-  private id: number = 0;
-  private nickname: string = ''
+  private nickname: string = '';
 
   get isLoggedIn(): boolean {
     return this.loggedIn;
@@ -17,10 +16,6 @@ export class AuthService {
 
   get visibleName(): string {
     return this.nickname;
-  }
-
-  get userId(): number {
-    return this.id;
   }
 
   constructor(private connection: ConnectionService) {}
@@ -36,6 +31,7 @@ export class AuthService {
         console.log(user);
         // tslint:disable-next-line
         this.nickname = user.getIdToken().payload.nickname;
+        this.connection.jwtToken = user.getAccessToken().getJwtToken();
         this.connection.setupWebsocket(user, this.nickname);
         this.loggedIn = true;
       })
@@ -57,6 +53,7 @@ export class AuthService {
         if (tokens != null) {
           console.log(user);
           this.nickname = user.attributes.nickname;
+          this.connection.jwtToken = user.signInUserSession.accessToken.jwtToken;
           this.connection.setupWebsocket(user.signInUserSession, this.nickname);
           this.loggedIn = true;
         }

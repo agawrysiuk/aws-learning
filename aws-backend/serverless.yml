@@ -29,6 +29,14 @@ provider:
             - "/"
             - - Fn::GetAtt: [ChatConnectionsTable, Arn]
               - "*"
+  httpApi:
+    cors: true
+    authorizers:
+      serviceAuthorizer:
+        type: jwt
+        identitySource: $request.header.Authorization
+        issuerUrl: https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_OV4db5SvL
+        audience: 7e4gp9lh414sg0qjaavh9pvhoo
   environment:
     CHATCONNECTION_TABLE:
       Ref: ChatConnectionsTable
@@ -67,6 +75,13 @@ functions:
     events:
       - websocket:
           route: getConnectedList
+  chatHistory:
+    handler: handler.chatHistory
+    events:
+      - httpApi:
+          method: GET
+          path: /history
+          authorizer: serviceAuthorizer
 
 resources:
   Resources:

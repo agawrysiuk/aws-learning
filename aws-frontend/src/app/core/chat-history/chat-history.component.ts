@@ -4,6 +4,7 @@ import {ChatMessage} from "../../shared/constants/chat-message";
 import {MessageService} from "../../shared/services/messages/message.service";
 import {AuthService} from "../../shared/services/auth/auth.service";
 import {Subscription} from "rxjs";
+import {ConnectionService} from "../../shared/services/connection/connection.service";
 
 @Component({
   selector: 'app-chat-history',
@@ -20,7 +21,8 @@ export class ChatHistoryComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private messageService: MessageService,
-              public auth: AuthService) {
+              public auth: AuthService,
+              private connection: ConnectionService) {
     this.me = this.auth.visibleName;
   }
 
@@ -30,6 +32,7 @@ export class ChatHistoryComponent implements OnInit, OnDestroy {
       if (!!id) {
         this.showInfoText = false;
         this.otherUserName = id;
+        this.getChatHistory();
         this.newMessageAcquiredSubscription = this.messageService.newMessageSubject.subscribe((message: ChatMessage) => {
           this.chatHistory.push(message);
         })
@@ -43,4 +46,13 @@ export class ChatHistoryComponent implements OnInit, OnDestroy {
     }
   }
 
+  private getChatHistory() {
+    this.connection.getChatHistory(this.auth.visibleName, this.otherUserName)
+      .then((history: any) => {
+        console.log(history);
+        this.chatHistory = history.messages.sort((a, b) => {
+          return a.date > b.date ? 1 : -1;
+        });
+      });
+  }
 }
