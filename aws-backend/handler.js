@@ -24,6 +24,7 @@ module.exports.connectionManager = async (event, context, callback) => {
   } else if (event.requestContext.eventType === "DISCONNECT") {
     try {
       await deleteConnection(event.requestContext.connectionId);
+      await this.getConnectedList(event, context, callback);
       callback(null, successfullResponse);
     } catch (error) {
       callback(null, {
