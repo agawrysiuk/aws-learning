@@ -3,9 +3,9 @@
   <p *ngIf="!showInfoText && chatHistory.length === 0" class="chat-info">Start your conversation here</p>
   <div *ngIf="!showInfoText && chatHistory.length > 0">
     <div *ngFor="let message of chatHistory">
-      <div [ngStyle]="{'margin-left': message.who === whoEnum.YOU ? 'auto' : '16px'}"
-           [ngClass]="{'other': message.who === whoEnum.OTHER}" class="chat-bubble">
-        <p class="chat-name">{{message.who === whoEnum.YOU ? auth.visibleName : otherUserName}}
+      <div [ngStyle]="{'margin-left': message.from === me ? 'auto' : '16px'}"
+           [ngClass]="{'other': message.from !== me}" class="chat-bubble">
+        <p class="chat-name">{{message.from === me ? auth.visibleName : otherUserName}}
           <span class="chat-time">{{message.date | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
         </p>
         <p class="chat-message">{{message.message}}</p>

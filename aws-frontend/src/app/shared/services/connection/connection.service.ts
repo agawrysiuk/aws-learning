@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {WEBSOCKET_ADDRESS} from "../../../../environments/secret-info";
 import {MessageService} from "../messages/message.service";
-import {WhoEnum} from "../../constants/chat-message";
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +45,7 @@ export class ConnectionService {
       );
       console.log("Incoming: " + JSON.stringify(data));
       if(data.message) {
-        this.messageService.newMessageSubject.next({message: data.message, date: new Date(), who: WhoEnum.OTHER})
+        this.messageService.newMessageSubject.next({message: data.message, date: new Date(), from: data.from, to: data.to})
       }
       if(data.online) {
         this.messageService.setOnlineUsers(data.online);
@@ -64,6 +63,6 @@ export class ConnectionService {
         })
       );
     }
-    this.messageService.newMessageSubject.next({message: message, date: new Date(), who: WhoEnum.YOU})
+    this.messageService.newMessageSubject.next({message: message, date: new Date(), from: from, to: to})
   }
 }

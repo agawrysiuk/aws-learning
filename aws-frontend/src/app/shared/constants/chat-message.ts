@@ -1,10 +1,6 @@
 export interface ChatMessage {
-  who: WhoEnum
+  from: string;
+  to: string;
   date: Date;
   message: string;
-}
-
-export enum WhoEnum {
-  YOU,
-  OTHER
 }

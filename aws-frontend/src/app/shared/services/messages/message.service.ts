@@ -14,11 +14,10 @@ export class MessageService {
   newMessageSubject = new Subject<ChatMessage>();
   onlineUsersRefreshed = new Subject<User[]>();
   onlineUsers: User[] = [];
-  constructor() { }
+  recipientUser: string = 'Unknown';
 
-  getOtherUserName(username: string) {
-    const otherUser = this.onlineUsers.find(u => u.userName == username);
-    return otherUser ? otherUser.userName : 'Unknown';
+  constructor() {
+    this.recipientChanged.subscribe(value => this.recipientUser = value);
   }
 
   sort() {

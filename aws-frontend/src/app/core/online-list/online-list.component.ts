@@ -28,6 +28,7 @@ export class OnlineListComponent implements OnInit, OnDestroy {
   }
 
   openChat(username: string) {
+    this.messageService.recipientChanged.next(username);
     this.router.navigate(['/' + username]);
   }
 
