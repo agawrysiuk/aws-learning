@@ -24,6 +24,7 @@ provider:
         - "dynamodb:Scan"
       Resource:
         - Fn::GetAtt: [ChatConnectionsTable, Arn]
+        - Fn::GetAtt: [ChatHistoryTable, Arn]
         - Fn::Join:
             - "/"
             - - Fn::GetAtt: [ChatConnectionsTable, Arn]
@@ -31,6 +32,8 @@ provider:
   environment:
     CHATCONNECTION_TABLE:
       Ref: ChatConnectionsTable
+    CHATHISTORY_TABLE:
+      Ref: ChatHistoryTable
   websocketApiName: websocket-chat-${self:provider.stage}
   websocketApiRouteSelectionExpression: $request.body.action
 
@@ -68,3 +71,4 @@ functions:
 resources:
   Resources:
     ChatConnectionsTable: ${file(resources/chatConnectionsTable.yml)}
+    ChatHistoryTable: ${file(resources/chatHistoryTable.yml)}

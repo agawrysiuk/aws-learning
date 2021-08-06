@@ -61,6 +61,8 @@ module.exports.sendMessage = async (event, context, callback) => {
     return { statusCode: 500 };
   }
 
+  await storeMessage(JSON.parse(JSON.parse(event.body).data), event.requestContext.requestId);
+
   const postCalls = createPostCalls(event, connectionData.Items, JSON.parse(event.body).data);
 
   try {
@@ -71,6 +73,21 @@ module.exports.sendMessage = async (event, context, callback) => {
   }
   callback(null, successfullResponse);
 };
+
+const storeMessage = async (data, requestId) => {
+  const putParams = {
+    TableName: process.env.CHATHISTORY_TABLE,
+    Item: {
+      requestId: { S: requestId },
+      message: { S: data.message },
+      date: { S: data.date },
+      from: { S: data.from },
+      to: { S: data.to },
+    },
+  };
+
+  return DDB.putItem(putParams).promise();
+}
 
 module.exports.getConnectedList = async (event, context, callback) => {
   try {

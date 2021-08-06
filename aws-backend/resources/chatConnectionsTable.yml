@@ -9,8 +9,8 @@ Properties:
     - AttributeName: connectionId
       KeyType: HASH
   ProvisionedThroughput:
-    ReadCapacityUnits: 5
-    WriteCapacityUnits: 5
+    ReadCapacityUnits: 1
+    WriteCapacityUnits: 1
   GlobalSecondaryIndexes:
     - IndexName: userid_index
       KeySchema:

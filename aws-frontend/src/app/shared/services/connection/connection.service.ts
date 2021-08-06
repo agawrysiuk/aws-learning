@@ -45,7 +45,7 @@ export class ConnectionService {
       );
       console.log("Incoming: " + JSON.stringify(data));
       if(data.message) {
-        this.messageService.newMessageSubject.next({message: data.message, date: new Date(), from: data.from, to: data.to})
+        this.messageService.newMessageSubject.next({message: data.message, date: data.date, from: data.from, to: data.to})
       }
       if(data.online) {
         this.messageService.setOnlineUsers(data.online);
@@ -54,7 +54,7 @@ export class ConnectionService {
   }
 
   sendMessage(message: string, from: string, to: string) {
-    const newMessage = { message: message, author: from, to: to };
+    const newMessage = { message: message, date: new Date(), from: from, to: to };
     if(this.websocket) {
       this.websocket.send(
         JSON.stringify({
@@ -63,6 +63,6 @@ export class ConnectionService {
         })
       );
     }
-    this.messageService.newMessageSubject.next({message: message, date: new Date(), from: from, to: to})
+    this.messageService.newMessageSubject.next(newMessage)
   }
 }

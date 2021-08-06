@@ -2,6 +2,9 @@
 This project was created in 3-9th of August 2021, during my Education Week at
 Altkom Software & Consulting.
 
+Here, you will find some information about what I learned and what difficulties I had
+while learning to deploy my application with AWS Services.
+
 ### AWS Toolkit for JetBrains
 https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html
 
@@ -88,6 +91,17 @@ You can also verify that:
 ### Serverless.com
 Serverless is a tool to automatically deploy a defined architecture to cloud. It supports AWS, Azure, Google Cloud, Knative & more. It uses yaml files.
 
+### DynamoDB
+DynamoDB is a NoSQL database that supports key-value pairs and documents.
+
+While defining the DynamoDB with serverless, I got the following error:
+```
+An error occurred: ChatHistoryTable - One or more parameter values were invalid: Some AttributeDefinitions are not used. AttributeDefinitions: [date, from, to, message, requestId], keys used: [requestId, from, to] (Service: AmazonDynamoDBv2; Status Code: 400; Error Code: ValidationException; Request ID: RD0LI6PD5GBSTR0GIVQTI0FBCBVV4KQNSO5AEMVJF66Q9ASUAAJG; Proxy: null).
+```
+Apparently, while defining the table with Serverless/CloudFormation, we don't have to specify
+exact attributes that will be stored in this table. We type out in the `Properties.AttributeDefinitions` only
+the ones that will be used as keys/indexes.
+
 ### Edu log:
 03.08.2021
 1. Thinking about the application
@@ -142,3 +156,4 @@ Serverless is a tool to automatically deploy a defined architecture to cloud. It
 06.08.2021
 1. Learned about DynamoDB and JS API query() / scan() methods
 2. Wrote lambda functions for returning online / active people
+3. Created a DynamoDB table for storing the messages and implemented saving
