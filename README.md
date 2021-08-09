@@ -1,10 +1,88 @@
 # aws-learning
-This project was created in 3-9th of August 2021, during my Education Week at
+This project was created in the 3rd to 9th of August 2021, during my Education Week at the
 Altkom Software & Consulting.
 
 Here, you will find some information about what I learned and what difficulties I had
 while learning to deploy my application with AWS Services.
 
+## What is this project?
+
+I decided to create a simple web-chat application for everyone with open registration.
+
+When the application is opened, Amplify checks the user's credentials saved in the local storage
+against Cognito's data. I created a Cognito User Pool (containing `nickname` as a mandatory registration field)
+with a web app (this one) connected to it.
+If the user is logged in, he enters the message window. If not, he needs to login or register.
+
+Login needs a username in form of an email, as well as the password. Password policy has been lowered
+down due to it being a test application. Registration form adds another field called `nickname` that
+prompts the user to enter his name which will be visible in the application. The registration confirmation has not
+been implemented (but still exists), and it was done manually with AWS CLI.
+
+The main application consists of the:
+- header with simple information
+- online list on the left
+- chat history on the right (unavailable when you didn't choose the person to talk to)
+- writing window on the bottom (unavailable when you didn't choose the person to talk to)
+
+After the user is successfully authenticated, he connects to the websocket which is
+guarded with custom JWT authorization (taken in most part from https://github.com/yai333/QuestionAnswerChatbot
+to save time and not re-write everything from scratch; you can check my notes about custom authorization
+in the section `Writing AWS Lambda function to check if requester is authorized`). In short, lambda function
+is a NodeJS application that decodes the sections of JWT and checks them against the Cognito
+public information. When everything matches, his connection credentials (connectionId + nickname) are saved
+into the DynamoDB table, which can be accessed later to inform the user through WS that there is a new message.
+After all of this happens, we come back to user who gets connected to websocket and who sends the info that he is online.
+Websocket informs everyone that the online list has been updated and sends the new info that will be displayed
+to everyone on the list to the left.
+
+When the user clicks on the recipient on the left, chat history and input field get notified and
+are being unblocked. When this happens, user requests the chat-history with a given nickname through
+HttpApi endpoint on API Gateway (which is also secured with JWT authorization, but the default one, not a custom one).
+Then, the DynamoDB other table with chat history is being scanned for the messages that come out or in
+to both people talking to each other. All the chat history is being sent back to the user who immediately
+sees it.
+
+When the user writes the message, it's being sent through the websocket with the information about who it
+comes from, who it goes to, the message itself and the date of sending. Websocket uses a proper Lambda handler
+by the type of message sent in `request.body.action` (e.g. here - `sendMessage`). It gets saved in the database and
+then is being sent to the recipient of this message. The handler for this lambda function searches database
+for the connectionId associated with the given nickname and sends the data there through websocket. The user
+on the other ends receives the message and adds it to his chat history. The owner of the message doesn't get
+notified about the new (his) message, and he just saves it to the history by himself.
+
+Overall, the backend part was deployed by the tool `serverless` and consists of:
+- Two DynamoDB tables (Connection Info and Chat History)
+- A NodeJS application as a Lambda function with:
+    - Five handlers for five different websocket triggers
+    - One handler for one Http Api trigger (chat history)
+- S3 bucket with the artifact used in the Lambda function (detailed above)
+- An API Gateway with:
+    - Websocket
+    - HttpApi endpoint with default JWT authorizer
+- IAM roles to query DynamoDB, manage websocket connections
+- CloudWatch logs for every Lambda function
+
+Also, there was manually added and configured:
+- Cognito pool + Cognito app client
+
+## What more can be done to this project?
+For the lack of time, this project is unfinished. There are some things that would be best added here:
+- Implement registration confirmation
+- Sending new message through regular httpApi, not websocket?
+- Instead of sending the information about being online to websocket, it should be automatically handled
+  after him being connected (to prevent him from manually spamming users about it), and he should manually
+  download the online list by himself.
+- Some form of a local storage (e.g. IndexedDB) for saving the messages.
+- For sure, there needs to be some form of checking that the requester is the same person who
+wants to get the owner's messages in the REST API (right now, there is a default authorization
+  so no one unauthorized will download the chat-history, but it would be best to check the requester
+  with his request params, especially 'from' param)
+- It would be good to add lazy loading of the messages
+- There could be some settings and logout added
+- Friend-list, as well as some filter to the online-list
+
+## Notes:
 ### AWS Toolkit for JetBrains
 https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html
 
@@ -169,3 +247,8 @@ to settled with another method called `scan()` although they say it's not prefer
 3. Created a DynamoDB table for storing the messages and implemented saving
 4. Created httpApi endpoint with a default JWT authorization to get the chat history from DynamoDB table
 5. Imported chat history while entering some conversation
+
+09.08.2021
+1. Cleaned up the app
+2. Implemented registration
+3. Created a description for the app
