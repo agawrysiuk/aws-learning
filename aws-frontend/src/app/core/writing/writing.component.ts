@@ -18,10 +18,10 @@ export class WritingComponent implements OnInit, OnDestroy {
   constructor(private connection: ConnectionService,
               private messageService: MessageService,
               private auth: AuthService) {
+    this.recipientSub = this.messageService.recipientChanged.subscribe(value => this.recipient = value);
   }
 
   ngOnInit(): void {
-    this.recipientSub = this.messageService.recipientChanged.subscribe(value => this.recipient = value);
   }
 
   ngOnDestroy(): void {

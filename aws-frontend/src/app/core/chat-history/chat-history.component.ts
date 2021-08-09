@@ -32,6 +32,7 @@ export class ChatHistoryComponent implements OnInit, OnDestroy {
       if (!!id) {
         this.showInfoText = false;
         this.otherUserName = id;
+        this.messageService.recipientChanged.next(this.otherUserName);
         this.getChatHistory();
         this.newMessageAcquiredSubscription = this.messageService.newMessageSubject.subscribe((message: ChatMessage) => {
           this.chatHistory.push(message);
