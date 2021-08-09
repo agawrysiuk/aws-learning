@@ -18,7 +18,8 @@ export class AuthService {
     return this.nickname;
   }
 
-  constructor(private connection: ConnectionService) {}
+  constructor(private connection: ConnectionService) {
+  }
 
   login(username: string, password: string) {
     console.log("Logging in username: " + username + ", password: " + password);
@@ -62,5 +63,16 @@ export class AuthService {
         console.log(err);
         err.next();
       })
+  }
+
+  register(email: string, nickname: string, password: string) {
+    return Auth.signUp({
+        username: email,
+        password: password,
+        attributes: {
+          nickname: nickname,
+        }
+      }
+    );
   }
 }

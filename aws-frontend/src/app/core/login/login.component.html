@@ -1,15 +1,30 @@
 <div class="login-screen">
   <div class="login-window">
+    <ul class="option-menu">
+      <li [ngClass]="{'active': !registrationActive}" (click)="changeTab(false)">
+        <span class="pi pi-home"></span> Login
+      </li>
+      <li [ngClass]="{'active': registrationActive}" (click)="changeTab(true)">
+        <span class="pi pi-sign-in"></span> Sign-up
+      </li>
+    </ul>
     <form [formGroup]="form">
       <span class="p-float-label">
         <input id="email-input" type="text" pInputText [formControlName]="formFields.email">
         <label for="email-input">Email</label>
       </span>
+      <span *ngIf="registrationActive" class="p-float-label">
+        <input id="nickname-input" type="text" pInputText [formControlName]="formFields.nickname">
+        <label for="nickname-input">Nickname</label>
+      </span>
       <span class="p-float-label">
         <input id="password-input" type="password" pPassword [feedback]="false" [formControlName]="formFields.password">
         <label for="password-input">Password</label>
       </span>
-      <button pButton type="button" label="Login" (click)="login()"></button>
+      <button pButton type="button" [disabled]="form.invalid" (click)="submit()">
+        <span>{{registrationActive? 'Register' : 'Login'}}</span>
+      </button>
     </form>
+    <span *ngIf="errorMessage" class="error-message">{{errorMessage}}</span>
   </div>
 </div>

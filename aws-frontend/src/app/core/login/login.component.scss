@@ -13,17 +13,89 @@
   background-color: $black;
 
   .login-window {
+    position: relative;
     padding: 48px;
     border: 1px solid $platinum;
     border-radius: 8px;
     background-color: $background-color;
 
-    form {
-      @include inside-margin-vertical(32px);
+    .option-menu {
+      display: flex;
+      list-style-type: none;
+      width: 100%;
+      justify-content: space-around;
+      padding-left: 0;
+      margin-bottom: 32px;
 
-      button {
-        width: 100%;
+      li {
+        position: relative;
+        flex-grow: 1;
+        text-align: center;
+        padding-bottom: 12px;
+        cursor: pointer;
+
+        &:after {
+          position: absolute;
+          display: block;
+          content: '';
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background-color: $grey;
+        }
+
+        &:hover:after {
+          background-color: $orange-web;
+        }
+      }
+
+      li.active {
+        filter: invert(60%) sepia(71%) saturate(1216%) hue-rotate(352deg) brightness(107%) contrast(98%);
       }
     }
   }
+}
+
+form {
+  @include inside-margin-vertical(32px);
+
+  button {
+    width: 100%;
+  }
+}
+
+:host ::ng-deep .p-button {
+  background-color: $orange-web;
+  border-color: $orange-web;
+  text-align: center;
+
+  .p-button-label {
+    display: none !important;
+  }
+
+  span {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.p-button:enabled:hover {
+  $hover-color: #fc7f11;
+  background-color: $hover-color;
+  border-color: $hover-color;
+}
+
+.error-message {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  transform: translateY(150%);
+  background-color: #FFFFFF;
+  border-radius: 3px;
+  color: red;
+  max-width: 219px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid red;
 }
