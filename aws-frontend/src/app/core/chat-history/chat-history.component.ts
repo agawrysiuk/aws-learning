@@ -35,7 +35,11 @@ export class ChatHistoryComponent implements OnInit, OnDestroy {
         this.messageService.recipientChanged.next(this.otherUserName);
         this.getChatHistory();
         this.newMessageAcquiredSubscription = this.messageService.newMessageSubject.subscribe((message: ChatMessage) => {
-          this.chatHistory.push(message);
+          if(this.otherUserName === message.from || this.auth.visibleName === message.from) {
+            this.chatHistory.push(message);
+          } else {
+            // alert("New message outside this conversation from " + message.from + ": " + message.message);
+          }
         })
       }
     })

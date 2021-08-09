@@ -47,9 +47,8 @@ When the user writes the message, it's being sent through the websocket with the
 comes from, who it goes to, the message itself and the date of sending. Websocket uses a proper Lambda handler
 by the type of message sent in `request.body.action` (e.g. here - `sendMessage`). It gets saved in the database and
 then is being sent to the recipient of this message. The handler for this lambda function searches database
-for the connectionId associated with the given nickname and sends the data there through websocket. The user
-on the other ends receives the message and adds it to his chat history. The owner of the message doesn't get
-notified about the new (his) message, and he just saves it to the history by himself.
+for the connectionId associated with the given nicknames and sends the data there through websocket. Both users
+on the other ends receives the message and add it to their chat history.
 
 Overall, the backend part was deployed by the tool `serverless` and consists of:
 - Two DynamoDB tables (Connection Info and Chat History)
@@ -66,6 +65,10 @@ Overall, the backend part was deployed by the tool `serverless` and consists of:
 Also, there was manually added and configured:
 - Cognito pool + Cognito app client
 
+To deploy the backend, you need to use the command `sls deploy --stage dev`.
+
+You can open the frontend application directly by calling `ng serve`.
+
 ## What more can be done to this project?
 For the lack of time, this project is unfinished. There are some things that would be best added here:
 - Implement registration confirmation
@@ -73,7 +76,10 @@ For the lack of time, this project is unfinished. There are some things that wou
 - Instead of sending the information about being online to websocket, it should be automatically handled
   after him being connected (to prevent him from manually spamming users about it), and he should manually
   download the online list by himself.
-- Some form of a local storage (e.g. IndexedDB) for saving the messages.
+- Some form of a local storage (e.g. IndexedDB) for saving the messages (as well as saving the
+  messages from the not active conversation - right now, if they come through websocket, they
+  are just being ignored because we don't have any local storage for messages yet).
+- The information about new message from the other person than selected at the given moment.
 - For sure, there needs to be some form of checking that the requester is the same person who
 wants to get the owner's messages in the REST API (right now, there is a default authorization
   so no one unauthorized will download the chat-history, but it would be best to check the requester
@@ -81,6 +87,8 @@ wants to get the owner's messages in the REST API (right now, there is a default
 - It would be good to add lazy loading of the messages
 - There could be some settings and logout added
 - Friend-list, as well as some filter to the online-list
+- Read/unread messages
+- Sent/unsent messages
 
 ## Notes:
 ### AWS Toolkit for JetBrains
