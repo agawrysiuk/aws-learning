@@ -7,6 +7,8 @@ while learning to deploy my application with AWS Services.
 
 ## What is this project?
 
+![alt text](aws-learning.png)
+
 I decided to create a simple web-chat application for everyone with open registration.
 
 When the application is opened, Amplify checks the user's credentials saved in the local storage
@@ -49,6 +51,9 @@ by the type of message sent in `request.body.action` (e.g. here - `sendMessage`)
 then is being sent to the recipient of this message. The handler for this lambda function searches database
 for the connectionId associated with the given nicknames and sends the data there through websocket. Both users
 on the other ends receives the message and add it to their chat history.
+
+When the user disconnects, the handler notifies all websocket clients about updating the online list, so that they can't talk
+to the people who are not online.
 
 Overall, the backend part was deployed by the tool `serverless` and consists of:
 - Two DynamoDB tables (Connection Info and Chat History)
